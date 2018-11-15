@@ -7,7 +7,7 @@
         <div class="sign__body">
           <!-- <h1 class="sign__title">Kiss Console</h1> -->
           <!-- <p class="sign__text">统一授权中心</p> -->
-          <c-form>
+          <c-form v-loading="loading">
             <c-form-field label="用户名">
               <c-form-input v-model="form.username" type="text"></c-form-input>
             </c-form-field>
@@ -46,13 +46,14 @@ import base64 from 'base-64';
 export default {
   data() {
     return {
+      loading: false,
       form: {
         clientId: '',
         username: '',
         password: ''
       },
-      source: "",
-      target: ""
+      source: '',
+      target: ''
     };
   },
   mounted() {
@@ -76,7 +77,7 @@ export default {
         });
         return;
       }
-
+      this.loading = true;
       let res = await api.AuthLogin(this.form);
       if (res.code === codes.Success) {
         if (this.source) {
@@ -94,6 +95,9 @@ export default {
           type: 'warning'
         });
       }
+      setTimeout(() => {
+        this.loading = false;
+      }, 400);
     },
     getRedirectSource(authorizationCode) {
       let source = base64.decode(this.source);
