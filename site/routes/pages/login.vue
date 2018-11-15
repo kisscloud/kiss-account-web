@@ -30,7 +30,6 @@
           </div> -->
         </div>
         <footer class="sign__footer u-text-center">
-          <!-- <p>没有账户？ <router-link to="/register">admin@qq.com</router-link></p> -->
           <p class="u-text-muted u-fs-12">LD Capital © 2017-2018. All RIGHT RESERVED.</p>
         </footer>
       </section>
