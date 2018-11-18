@@ -4,32 +4,25 @@
       <c-level>
         <template slot="left">
                 <div class="cell">
-                  <!-- <div class="cell__media">
-                    <i class="icon-footprint"></i>
-                  </div> -->
                   <div class="cell__content">
                     <h1 class="toolbar__title">角色管理 <span>平台角色管理</span></h1>
                   </div>
                 </div>
-</template>
+        </template>
 
-<template slot="right">
-  <el-button @click="openRoleFormModal()" type="primary" size="small">
-    添加角色
-  </el-button>
-  <!-- <c-level-item><c-button icon-start="icon-plus-circle" type="info" smart>添加</c-button></c-level-item> -->
-</template>
+        <template slot="right">
+          <el-button @click="openRoleFormModal()" type="primary" size="small">
+            添加角色
+          </el-button>
+        </template>
       </c-level>
     </header>
     
     <el-container>
-
-      <!-- 部门控件 -->
       <el-aside style="">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
               <span>角色列表</span>
-              <!-- <el-button style="float: right; padding: 3px 0" type="text">添加部门</el-button> -->
           </div>
           <el-table
             :data="roles"
@@ -55,7 +48,6 @@
           </el-card>
       </el-aside>
 
-      <!-- 用户列表 -->
       <el-main>
           <el-tabs type="border-card" v-model="tabActiveName">
             <el-tab-pane label="分配权限" name="first">
@@ -123,12 +115,6 @@
 
     <el-dialog :title="roleForm.id? '编辑角色': '添加角色'" :visible.sync="showRoleFormModal">
       <el-form :model="roleForm" :rules="roleFormRules" ref="roleForm" :validate-on-rule-change="false">
-        <!-- <el-form-item label="父部门" label-width="80px">
-          <el-select v-model="form2.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item> -->
         <el-form-item label="角色名称" label-width="80px" prop="name">
           <el-input v-model="roleForm.name" autocomplete="off"></el-input>
         </el-form-item>

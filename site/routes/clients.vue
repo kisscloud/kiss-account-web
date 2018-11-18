@@ -83,6 +83,34 @@
                 </li>
               </dl>
             </el-tab-pane>
+            <el-tab-pane label="授权对象" name="thrid">              
+              <el-table
+                :data="authServers"
+                id="authServersTable"
+                >
+                <el-table-column
+                  prop="ip"
+                  label="IP 地址"
+                  min-width="120"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="remark"
+                  width="180"
+                  label="备注"
+                >
+                </el-table-column>
+                <el-table-column
+                  width="180"
+                  align="center"
+                  label="操作">
+                  <span slot-scope="scope" style="text-align: center;display: block;width: 100%;">
+                    <el-button type="text" size="mini" @click="deleteAuthServer(scope.row)">删除</el-button>
+                  </span>
+                </el-table-column>                
+              </el-table>           
+              <el-button size="small" type="text" style="margin-left:7px;margin-top:10px;">添加对象</el-button>   
+            </el-tab-pane>
           </el-tabs>
       </el-main>
     </el-container>
@@ -179,7 +207,17 @@ export default {
       defaultProps: {
         children: 'children',
         label: 'label'
-      }
+      },
+      authServers: [
+        {
+          ip: '192.168.0.102',
+          remark: 'Nest1'
+        },
+        {
+          ip: '192.168.0.103',
+          remark: 'Nest2'
+        }
+      ]
     };
   },
   async mounted() {
@@ -425,7 +463,8 @@ export default {
           });
         }
       });
-    }
+    },
+    deleteAuthServer(server) {}
   }
 };
 </script>
@@ -498,6 +537,10 @@ export default {
 
   .icon-eye {
     color: #000;
+  }
+
+  #authServersTable .cell {
+    padding-left: 0;
   }
 }
 </style>

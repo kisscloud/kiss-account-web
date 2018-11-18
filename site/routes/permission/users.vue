@@ -4,44 +4,33 @@
       <c-level>
         <template slot="left">
                   <div class="cell">
-                    <!-- <div class="cell__media">
-                      <i class="icon-footprint"></i>
-                    </div> -->
                     <div class="cell__content">
                       <h1 class="toolbar__title">用户管理 <span>管理平台的部门和用户</span></h1>
                     </div>
                   </div>
-</template>
+        </template>
 
-<template slot="right">
-  <!-- <c-level-item>
-    <el-input style="width=300px;" size="small" placeholder="输入用户ID/姓名/邮箱/手机号">
-      <el-button slot="append" icon="el-icon-search"></el-button>
-    </el-input>
-  </c-level-item> -->
-  <el-dropdown @command="handleCommand">
-    <el-button type="primary" size="small">
-      添加
-    </el-button>
-    <el-dropdown-menu slot="dropdown">
-      <el-dropdown-item command="account">添加用户</el-dropdown-item>
-      <el-dropdown-item command="group">添加部门</el-dropdown-item>
-    </el-dropdown-menu>
-  </el-dropdown>
-  <!-- <c-level-item><c-button icon-start="icon-plus-circle" type="info" smart>添加</c-button></c-level-item> -->
-</template>
+        <template slot="right">
+          <el-dropdown @command="handleCommand">
+            <el-button type="primary" size="small">
+              添加
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="account">添加用户</el-dropdown-item>
+              <el-dropdown-item command="group">添加部门</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </template>
       </c-level>
     </header>
     
     
     <el-container>
 
-      <!-- 部门控件 -->
       <el-aside style="">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
               <span>部门列表</span>
-              <!-- <el-button style="float: right; padding: 3px 0" type="text">添加部门</el-button> -->
           </div>
           <el-tree
           :data="groupTree"
@@ -74,14 +63,12 @@
           </el-tree>
           </el-card>
       </el-aside>
-      <!-- 用户列表 -->
+    
       <el-main>
         <el-card class="box-card">
           <div slot="header" class="clearfix">
               <span>用户列表</span>
-              <!-- <el-button style="float: right; padding: 3px 0" type="text">添加用户</el-button> -->
           </div>
-
           <el-table
             :data="showAccounts"
             border
@@ -113,7 +100,6 @@
               label="操作"
               width="180">
               <span slot-scope="scope" style="text-align: center;display: block;width: 100%;">
-                <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button> -->
                 <el-button type="text" size="mini" @click="openEditAccount(scope.row)">编辑</el-button>
                 <el-button v-show="scope.row.status === 1" type="text" size="mini" @click="clickDimission(scope.row)">离职</el-button>
                 <el-button v-show="scope.row.status === 2" type="text" size="mini" @click="clickResume(scope.row)">复职</el-button>
@@ -121,12 +107,6 @@
               </span>
             </el-table-column>
           </el-table>
-          <!-- <br>
-          <el-pagination
-            background
-            layout="prev, pager, next"
-            :total="accountsCount">
-          </el-pagination> -->
         </el-card>
       </el-main>
     </el-container>
