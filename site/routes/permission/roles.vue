@@ -3,26 +3,27 @@
     <header class="toolbar">
       <c-level>
         <template slot="left">
-                <div class="cell">
-                  <div class="cell__content">
-                    <h1 class="toolbar__title">角色管理 <span>平台角色管理</span></h1>
-                  </div>
-                </div>
+          <div class="cell">
+            <div class="cell__content">
+              <h1 class="toolbar__title">
+                角色管理
+                <span>平台角色管理</span>
+              </h1>
+            </div>
+          </div>
         </template>
 
         <template slot="right">
-          <el-button @click="openRoleFormModal()" type="primary" size="small">
-            添加角色
-          </el-button>
+          <el-button @click="openRoleFormModal()" type="primary" size="small">添加角色</el-button>
         </template>
       </c-level>
     </header>
-    
+
     <el-container>
-      <el-aside style="">
+      <el-aside style>
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-              <span>角色列表</span>
+            <span>角色列表</span>
           </div>
           <el-table
             :data="roles"
@@ -30,96 +31,100 @@
             :show-header="false"
             :highlight-current-row="true"
             @current-change="handleCurrentChange"
-            style="width: 100%">
-            <el-table-column
-              prop="name"
-              label="角色名称"
-              >
-            </el-table-column>
-             <el-table-column
-              width="60px"
-              align="right"
-              label="操作">
+            style="width: 100%"
+          >
+            <el-table-column prop="name" label="角色名称"></el-table-column>
+            <el-table-column width="60px" align="right" label="操作">
               <span slot-scope="scope" style="float:right;">
-                <el-button @click="openEditRoleModal(scope.row)" class="icon-pen5" type="text" size="mini"></el-button>
+                <el-button
+                  @click="openEditRoleModal(scope.row)"
+                  class="icon-pen5"
+                  type="text"
+                  size="mini"
+                ></el-button>
               </span>
             </el-table-column>
           </el-table>
-          </el-card>
+        </el-card>
       </el-aside>
 
       <el-main>
-          <el-tabs type="border-card" v-model="tabActiveName">
-            <el-tab-pane label="分配权限" name="first">
-              <el-tree
-                :data="permissionTree"
-                ref="permissionTree"
-                show-checkbox
-                node-key="id"
-                :default-expand-all="true"
-                :default-checked-keys="selectPermissions"
-                @check-change="openRolePermissionModal"
-                :props="defaultProps">
-                <span class="custom-tree-node" slot-scope="{ node, data }">
-                  <span>{{ data.label }}</span>
-                  <span>
-                    
-                    <el-button
-                      type="text"
-                      class="permission-code"
-                      :title="data.limitString || data.code || '-'"
-                      size="mini">
-                      {{ data.id === 'module0' ? '权限码' : (data.limitString || data.code || '-'  )}}
-                    </el-button>
-                  
-                    <el-button
-                      type="text"
-                      class="permission-description"
-                      :title="data.limitDescription || '-'"
-                      size="mini">
-                      {{ data.id === 'module0' ? '权限描述' : (data.limitDescription || '-')}}
-                    </el-button>
-                    <el-button
-                      type="text"
-                      class="option-type"
-                      size="mini">                    
-                      <span v-if="data.id === 'module0'">权限类型</span>
-                      <span v-if="data.type === 1">接口</span>
-                      <span v-if="data.type === 2">页面</span>
-                      <span v-if="data.type === 3">组件</span>
-                      <span v-if="data.id !== 'module0' && !data.code">-</span>
-                    </el-button>
-                  </span>
+        <el-tabs v-loading="pageLoading" type="border-card" v-model="tabActiveName">
+          <el-tab-pane label="分配权限" name="first">
+            <el-tree
+              :data="permissionTree"
+              ref="permissionTree"
+              show-checkbox
+              node-key="id"
+              :default-expand-all="true"
+              :default-checked-keys="selectPermissions"
+              @check-change="openRolePermissionModal"
+              :props="defaultProps"
+            >
+              <span class="custom-tree-node" slot-scope="{ node, data }">
+                <span>{{ data.label }}</span>
+                <span>
+                  <el-button
+                    type="text"
+                    class="permission-code"
+                    :title="data.limitString || data.code || '-'"
+                    size="mini"
+                  >{{ data.id === 'module0' ? '权限码' : (data.limitString || data.code || '-' )}}</el-button>
+
+                  <el-button
+                    type="text"
+                    class="permission-description"
+                    :title="data.limitDescription || '-'"
+                    size="mini"
+                  >{{ data.id === 'module0' ? '权限描述' : (data.limitDescription || '-')}}</el-button>
+                  <el-button type="text" class="option-type" size="mini">
+                    <span v-if="data.id === 'module0'">权限类型</span>
+                    <span v-if="data.type === 1">接口</span>
+                    <span v-if="data.type === 2">页面</span>
+                    <span v-if="data.type === 3">组件</span>
+                    <span v-if="data.id !== 'module0' && !data.code">-</span>
+                  </el-button>
                 </span>
-              </el-tree>
-              <br>
-              <el-button v-show="permissionTree.length != 0" size="small" type="primary" @click="savePermissions()">绑定权限</el-button>
-            </el-tab-pane>
-            <el-tab-pane label="分配用户" name="second">
-              <el-transfer
-                style="width:100%"
-                filterable
-                :filter-method="filterMethod"
-                filter-placeholder="输入用户名"
-                :titles="['未分配用户', '已分配用户']"
-                :button-texts="['移除 >','< 分配']"
-                v-model="selectAccounts"
-                :data="accounts">
-              </el-transfer>
-              <br>
-              <el-button size="small" type="primary" @click="saveAccounts()">绑定用户</el-button>
-            </el-tab-pane>
-          </el-tabs>
+              </span>
+            </el-tree>
+            <br>
+            <el-button
+              v-show="permissionTree.length != 0"
+              size="small"
+              type="primary"
+              @click="savePermissions()"
+            >绑定权限</el-button>
+          </el-tab-pane>
+          <el-tab-pane label="分配用户" name="second">
+            <el-transfer
+              style="width:100%"
+              filterable
+              :filter-method="filterMethod"
+              filter-placeholder="输入用户名"
+              :titles="['未分配用户', '已分配用户']"
+              :button-texts="['移除 >','< 分配']"
+              v-model="selectAccounts"
+              :data="accounts"
+            ></el-transfer>
+            <br>
+            <el-button size="small" type="primary" @click="saveAccounts()">绑定用户</el-button>
+          </el-tab-pane>
+        </el-tabs>
       </el-main>
     </el-container>
 
     <el-dialog :title="roleForm.id? '编辑角色': '添加角色'" :visible.sync="showRoleFormModal">
-      <el-form :model="roleForm" :rules="roleFormRules" ref="roleForm" :validate-on-rule-change="false">
+      <el-form
+        :model="roleForm"
+        :rules="roleFormRules"
+        ref="roleForm"
+        :validate-on-rule-change="false"
+      >
         <el-form-item label="角色名称" label-width="80px" prop="name">
           <el-input v-model="roleForm.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="角色状态" label-width="80px">
-          <el-radio-group  v-model="roleForm.status">
+          <el-radio-group v-model="roleForm.status">
             <el-radio label="1">有效</el-radio>
             <el-radio label="0">无效</el-radio>
           </el-radio-group>
@@ -132,22 +137,37 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="配置角色权限" :visible.sync="showRolePermissionModal" :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false">
-      <el-form :model="rolePermissionForm" ref="rolePermissionForm" :validate-on-rule-change="false">      
+    <el-dialog
+      title="配置角色权限"
+      :visible.sync="showRolePermissionModal"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+    >
+      <el-form
+        :model="rolePermissionForm"
+        ref="rolePermissionForm"
+        :validate-on-rule-change="false"
+      >
         <el-form-item label="权限名称" label-width="120px" prop="name">
           <el-input :disabled="true" v-model="rolePermissionForm.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="权限类型" label-width="120px" prop="type">
-          <el-select disabled v-model="rolePermissionForm.type" placeholder="请选择权限类型" style="width:100%;">
+          <el-select
+            disabled
+            v-model="rolePermissionForm.type"
+            placeholder="请选择权限类型"
+            style="width:100%;"
+          >
             <el-option label="接口" value="1"></el-option>
             <el-option label="页面" value="2"></el-option>
             <el-option label="组件" value="3"></el-option>
           </el-select>
-        </el-form-item> 
+        </el-form-item>
         <el-form-item v-if="rolePermissionForm.type == 1" label="角色权限码" label-width="120px">
           <el-input placeholder="输入数据限制参数" v-model="rolePermissionForm.limitString">
-          <span slot="prepend">{{ rolePermissionForm.code }}?</span>
-          </el-input>          
+            <span slot="prepend">{{ rolePermissionForm.code }}?</span>
+          </el-input>
           <p class="limit-fields">{{ rolePermissionForm.limitFields }}</p>
         </el-form-item>
         <el-form-item v-if="rolePermissionForm.type != 1" label="角色权限码" label-width="120px">
@@ -159,15 +179,15 @@
             type="textarea"
             :rows="2"
             placeholder="输入角色权限描述"
-            v-model="rolePermissionForm.limitDescription">
-          </el-input>
+            v-model="rolePermissionForm.limitDescription"
+          ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancelRolePermission(rolePermissionForm)">取消</el-button>
         <el-button type="primary" @click="addRolePermission(rolePermissionForm)">绑定</el-button>
       </div>
-    </el-dialog> 
+    </el-dialog>
   </c-main>
 </template>
 
@@ -187,6 +207,7 @@ export default {
   name: 'PersmissionUsers',
   data() {
     return {
+      pageLoading: false,
       showRoleFormModal: false,
       showRolePermissionModal: false,
       couldShowRolePermissionModal: false,
@@ -220,6 +241,7 @@ export default {
     };
   },
   async mounted() {
+    this.pageLoading = true;
     let res = await api.GetPagePermissionRolesParams();
 
     if (res.code === codes.Success) {
@@ -228,10 +250,11 @@ export default {
       this.selectAccounts = res.data.firstRoleAccounts || [];
       this.couldShowRolePermissionModal = true;
       this.modules = res.data.modules || [];
-      this.allAccounts = res.data.accounts.accounts || [];
+      this.allAccounts = res.data.accounts ? res.data.accounts.accounts : [];
       this.permissions = res.data.permissions || [];
       this.generatePermissionTree();
     }
+    this.pageLoading = false;
   },
   methods: {
     submitRoleForm() {
@@ -520,14 +543,16 @@ export default {
             let node = this.$refs.permissionTree.getNode({
               id: res.data.permissions[i].permissionId
             });
-            if (res.data.permissions[i].limitString) {
-              node.data.limitString = `${node.data.code}?${
-                res.data.permissions[i].limitString
-              }`;
-            }
-            if (res.data.permissions[i].limitDescription) {
-              node.data.limitDescription =
-                res.data.permissions[i].limitDescription;
+            if (node) {
+              if (res.data.permissions[i].limitString) {
+                node.data.limitString = `${node.data.code}?${
+                  res.data.permissions[i].limitString
+                }`;
+              }
+              if (res.data.permissions[i].limitDescription) {
+                node.data.limitDescription =
+                  res.data.permissions[i].limitDescription;
+              }
             }
           }
           this.$refs.permissionTree.setCheckedKeys(checkKeys);

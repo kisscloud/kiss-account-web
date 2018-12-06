@@ -83,6 +83,7 @@
           </div>
 
           <el-table
+            v-loading="pageLoading"
             :data="showPermissions"
             border
             style="width: 100%">
@@ -229,6 +230,7 @@ export default {
   name: 'PersmissionUsers',
   data() {
     return {
+      pageLoading:false,
       showPermissionModuleFormModal: false,
       showPermissionFormModal: false,
       formLabelWidth: '80px',
@@ -291,6 +293,7 @@ export default {
     };
   },
   async mounted() {
+    this.pageLoading = true;
     let res = await api.GetPagePermissionPermissionsParams();
     if (res.code === codes.Success) {
       this.permissions = res.data.permissions;
@@ -308,6 +311,7 @@ export default {
         this.moduleFormModules.push(element);
       });
     }
+    this.pageLoading = false;
   },
   methods: {
     submitPermissionForm() {
