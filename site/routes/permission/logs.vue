@@ -8,7 +8,8 @@
               <i class="icon-footprint"></i>
             </div>-->
             <div class="cell__content">
-              <h1 class="toolbar__title">操作日志
+              <h1 class="toolbar__title">
+                操作日志
                 <span>用户带有权限的操作日志</span>
               </h1>
             </div>
@@ -45,7 +46,7 @@
       <el-table v-loading="pageLoading" :data="logs" border :hover="false" style="width: 100%">
         <el-table-column prop="operatorName" label="擦作者" width="180"></el-table-column>
         <el-table-column prop="createdAt" label="操作时间" width="240"></el-table-column>
-        <el-table-column prop="targetType" label="操作对象" width="180"></el-table-column>
+        <el-table-column prop="targetText" label="操作对象" width="180"></el-table-column>
         <el-table-column label="操作前的值">
           <template slot-scope="scope">
             <pre v-if="scope.row.beforeValue"><code>{{ scope.row.beforeValue }}</code></pre>
@@ -86,6 +87,7 @@
 import Vue from 'vue';
 import * as api from './../../../src/api';
 import * as codes from './../../../src/codes';
+import dateFormat from 'dateformat';
 
 export default {
   data() {
@@ -107,6 +109,12 @@ export default {
         size: this.size
       });
       if (res.code === codes.Success) {
+        res.data.logs.forEach(elem => {
+          elem.createdAt = dateFormat(
+            new Date(elem.createdAt),
+            'yyyy-mm-dd HH:MM:ss'
+          );
+        });
         this.logs = res.data.logs;
         this.count = res.data.count;
       }

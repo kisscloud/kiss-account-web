@@ -98,7 +98,7 @@
               width="240">
             </el-table-column>
             <el-table-column
-              prop="targetType"
+              prop="targetText"
               label="操作对象"
               width="180">
             </el-table-column>
@@ -126,6 +126,8 @@ import * as api from './../../src/api';
 import * as codes from './../../src/codes';
 import ActivityChart from './data/charts/basic.vue';
 import data from './data/data.json';
+import dateFormat from 'dateformat';
+
 export default {
   name: 'HomeView',
   components: {
@@ -155,6 +157,12 @@ export default {
       this.rolesCount = res.data.rolesCount;
       this.permissionsCount = res.data.permissionsCount;
       this.recentOptionLogs = res.data.recentOptionLogs;
+      res.data.recentOptionLogs.logs.forEach(elem => {
+        elem.createdAt = dateFormat(
+          new Date(elem.createdAt),
+          'yyyy-mm-dd HH:MM:ss'
+        );
+      });
     }
     this.pageLoading = false;
   },

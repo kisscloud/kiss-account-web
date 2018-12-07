@@ -92,6 +92,7 @@
     "base-64": "^0.1.0",
     "chart.js": "^2.7.2",
     "core-js": "^2.5.7",
+    "dateformat": "^3.0.3",
     "element-ui": "^2.4.8",
     "flatpickr": "^4.5.0",
     "izitoast": "^1.4.0",

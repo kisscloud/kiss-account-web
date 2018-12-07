@@ -8,7 +8,7 @@
                 <i class="icon-footprint"></i>
               </div> -->
               <div class="cell__content">
-                <h1 class="toolbar__title">权限管理 <span>管理平台所有的功能权限</span></h1>
+                <h1 class="toolbar__title">权限管理 <span>管理平台所有的权限和模块</span></h1>
               </div>
             </div>
 </template>

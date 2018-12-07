@@ -1,12 +1,10 @@
 <template>
-  <c-app>
+  <c-app id="page-register">
     <c-content>
       <section class="sign u-m-auto">
+        <h1 class="sign__title">账户注册</h1>
+        <p class="sign__text">KISS CLOUD</p>
         <div class="sign__body">
-          <header class="sign__header">
-            <h1 class="sign__title">账户注册</h1>
-            <p class="sign__text">kiss console</p>
-          </header>
           <c-form>
             <c-form-field label="姓名">
               <c-form-input type="text"></c-form-input>
@@ -30,10 +28,12 @@
             <a href="#" class="u-color-muted u-ml-10 u-mr-10"><i class="icon-facebook2"></i></a>
             <a href="#" class="u-color-muted u-ml-10 u-mr-10"><i class="icon-twitter"></i></a>
             <a href="#" class="u-color-muted u-ml-10 u-mr-10"><i class="icon-github"></i></a>
-          </div> -->
+          </div>-->
         </div>
         <footer class="sign__footer u-text-center">
-          <p>已有账号? <router-link to="/auth/login">立即登录</router-link></p>
+          <p>已有账号?
+            <router-link to="/auth/login">立即登录</router-link>
+          </p>
         </footer>
       </section>
     </c-content>
@@ -53,3 +53,21 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+#page-register {
+  .sign {
+    top: -140px;
+  }
+  .sign__title {
+    font-size: 22px;
+  }
+  .sign__footer {
+    /* margin-top: 16px; */
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+  }
+}
+</style>

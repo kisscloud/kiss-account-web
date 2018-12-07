@@ -27,6 +27,16 @@ export const Ping = (data, options) => {
   return ajax.get('/ping', data, options)
 }
 
+// 检查超级管理员
+export const CheckRoot = (data, options) => {
+  return ajax.get('/kiss-account-console/service/account/root/check', data, options);
+};
+
+// 创建超级管理员
+export const PostRoot = (data, options) => {
+  return ajax.post('/kiss-account-console/service/account/root', data, options);
+};
+
 // 登录
 export const AuthLogin = (data, options) => {
   return ajax.post('/kiss-account-console/service/account/login', data, options);
