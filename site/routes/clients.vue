@@ -50,29 +50,7 @@
 
       <el-main>
         <el-tabs v-loading="pageLoading" type="border-card" v-model="tabActiveName">
-          <el-tab-pane label="权限模块" name="first">
-            <el-tree
-              :data="moduleTree"
-              ref="moduleTree"
-              show-checkbox
-              node-key="id"
-              :default-expand-all="true"
-              :default-checked-keys="selectModules"
-              :props="defaultProps"
-            >
-              <span class="custom-tree-node" slot-scope="{ node, data }">
-                <span>{{ data.label }}</span>
-              </span>
-            </el-tree>
-            <br>
-            <el-button
-              v-show="moduleTree.length != 0"
-              size="small"
-              type="primary"
-              @click="saveModules()"
-            >绑定模块</el-button>
-          </el-tab-pane>
-          <el-tab-pane label="客户端信息" name="second">
+          <el-tab-pane label="客户端信息" name="first">
             <dl class="client-info">
               <li>
                 <dt>客户端名称</dt>
@@ -96,6 +74,28 @@
                 </dd>
               </li>
             </dl>
+          </el-tab-pane>
+          <el-tab-pane label="权限模块" name="second">
+            <el-tree
+              :data="moduleTree"
+              ref="moduleTree"
+              show-checkbox
+              node-key="id"
+              :default-expand-all="true"
+              :default-checked-keys="selectModules"
+              :props="defaultProps"
+            >
+              <span class="custom-tree-node" slot-scope="{ node, data }">
+                <span>{{ data.label }}</span>
+              </span>
+            </el-tree>
+            <br>
+            <el-button
+              v-show="moduleTree.length != 0"
+              size="small"
+              type="primary"
+              @click="saveModules()"
+            >绑定模块</el-button>
           </el-tab-pane>
           <el-tab-pane label="授权对象" name="thrid">
             <el-table :data="authServers" id="authServersTable">

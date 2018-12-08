@@ -103,20 +103,21 @@
             </el-table-column>
             <el-table-column
               prop="code"
+              width="500"
               label="权限码">
             </el-table-column>
             <el-table-column
               prop="statusText"
               label="状态">
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               align="left"
               label="权限描述"
               width="320">
               <span slot-scope="scope" style="width:100%;">
                 {{ scope.row.limitFields || '-' }}
               </span>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
               align="center"
               label="操作"
@@ -139,7 +140,7 @@
     </el-container>
 
     <el-dialog title="添加权限" :visible.sync="showPermissionFormModal">
-      <el-form :model="permissionForm" :rules="permissionFormRules" ref="permissionForm" :validate-on-rule-change="false">
+      <el-form v-loading="loading" :model="permissionForm" :rules="permissionFormRules" ref="permissionForm" :validate-on-rule-change="false">
         <el-form-item label="所属模块" :label-width="formLabelWidth" prop="moduleId">
           <el-select v-model="permissionForm.moduleId" placeholder="请选择权限模块" style="width:100%;">
             <el-option v-for="item in permissionFormModules" v-bind:key="'permissionForm_'+item.id" :label="item.name" :value="item.id"></el-option>
@@ -181,7 +182,7 @@
     </el-dialog>
 
     <el-dialog title="添加权限模块" :visible.sync="showPermissionModuleFormModal">
-      <el-form :model="moduleForm" :rules="moduleFormRules" ref="moduleForm" :validate-on-rule-change="false">
+      <el-form v-loading="loading" :model="moduleForm" :rules="moduleFormRules" ref="moduleForm" :validate-on-rule-change="false">
         <el-form-item label="父模块" :label-width="formLabelWidth">
           <el-select v-model="moduleForm.parentId" placeholder="请选择父模块" style="width:100%;">
             <el-option v-for="item in moduleFormModules" v-bind:key="'moduleForm_'+item.id" :label="item.name" :value="item.id"></el-option>
@@ -231,6 +232,7 @@ export default {
   data() {
     return {
       pageLoading:false,
+      loading:false,
       showPermissionModuleFormModal: false,
       showPermissionFormModal: false,
       formLabelWidth: '80px',
@@ -316,6 +318,7 @@ export default {
   methods: {
     submitPermissionForm() {
       this.$refs['permissionForm'].validate(async valid => {
+        this.loading =true;
         if (valid) {
           let data = merge({}, this.permissionForm);
           data.moduleId = parseInt(this.permissionForm.moduleId);
@@ -387,6 +390,7 @@ export default {
               });
             }
           }
+          this.loading = false;
         } else {
           console.log('error submit!!');
           return false;
