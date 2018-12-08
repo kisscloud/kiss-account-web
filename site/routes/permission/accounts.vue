@@ -71,7 +71,9 @@
           </div>
           <el-table v-loading="pageLoading" :data="showAccounts" border style="width: 100%">
             <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-            <el-table-column prop="groupName" label="部门" width="180"></el-table-column>
+            <el-table-column label="部门" width="180">
+               <span slot-scope="scope">{{ scope.row.groupName || '-' }}</span>
+            </el-table-column>
             <el-table-column prop="email" label="邮箱"></el-table-column>
             <el-table-column prop="mobile" label="电话"></el-table-column>
             <el-table-column prop="statusText" label="状态"></el-table-column>

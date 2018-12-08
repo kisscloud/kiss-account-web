@@ -10,7 +10,7 @@ const ForgotView = () => import('./pages/forgot.vue');
 const ResetView = () => import('./pages/reset.vue');
 const ErrorView = () => import('./pages/error.vue');
 
-const PermissionUsers = () => import('./permission/users.vue');
+const PermissionAccounts = () => import('./permission/accounts.vue');
 const PermissionPermissions = () => import('./permission/permissions.vue');
 const PermissionRoles = () => import('./permission/roles.vue');
 const PermissionLogs = () => import('./permission/logs.vue');
@@ -59,7 +59,7 @@ export default [{
       },
       {
         path: '/permission/accounts',
-        component: PermissionUsers
+        component: PermissionAccounts
       },
       {
         path: '/permission/permissions',
