@@ -9,11 +9,11 @@
               <i class="icon-user icon-2x u-color-primary"></i>
             </template>
             <template slot="right">
-              <div class="u-text-right">
-                <div class="u-text-muted">在职成员</div>
-                <div class="u-h1">{{ accountsCount }}</div>
-              </div>
-            </template>
+  <div class="u-text-right">
+    <div class="u-text-muted">在职成员</div>
+    <div class="u-h1">{{ accountsCount }}</div>
+  </div>
+</template>
           </c-level>
         </c-panel>
       </c-col>
@@ -22,14 +22,14 @@
         <c-panel>
           <c-level>
             <template slot="left">
-              <i class="icon-tree3 icon-2x u-color-success"></i>
-            </template>
+  <i class="icon-tree3 icon-2x u-color-success"></i>
+</template>
             <template slot="right">
-              <div class="u-text-right">
-                <div class="u-text-muted">部门数</div>
-                <div class="u-h1">{{ accountGroupsCount }}</div>
-              </div>
-            </template>
+  <div class="u-text-right">
+    <div class="u-text-muted">部门数</div>
+    <div class="u-h1">{{ accountGroupsCount }}</div>
+  </div>
+</template>
           </c-level>
         </c-panel>
       </c-col>
@@ -38,14 +38,14 @@
         <c-panel>
           <c-level>
             <template slot="left">
-              <i class="icon-user-tie icon-2x u-color-info"></i>
-            </template>
+  <i class="icon-user-tie icon-2x u-color-info"></i>
+</template>
             <template slot="right">
-              <div class="u-text-right">
-                <div class="u-text-muted">角色数</div>
-                <div class="u-h1">{{ rolesCount }}</div>
-              </div>
-            </template>
+  <div class="u-text-right">
+    <div class="u-text-muted">角色数</div>
+    <div class="u-h1">{{ rolesCount }}</div>
+  </div>
+</template>
           </c-level>
         </c-panel>
       </c-col>
@@ -54,14 +54,14 @@
         <c-panel>
           <c-level>
             <template slot="left">
-              <i class="icon-key icon-2x u-color-danger"></i>
-            </template>
+  <i class="icon-key icon-2x u-color-danger"></i>
+</template>
             <template slot="right">
-              <div class="u-text-right">
-                <div class="u-text-muted">权限数</div>
-                <div class="u-h1">{{ permissionsCount }}</div>
-              </div>
-            </template>
+  <div class="u-text-right">
+    <div class="u-text-muted">权限数</div>
+    <div class="u-h1">{{ permissionsCount }}</div>
+  </div>
+</template>
           </c-level>
         </c-panel>
       </c-col>
@@ -83,6 +83,7 @@
           <a role="button" slot="control"><router-link to="/permission/logs">更多</router-link></a>
           <el-table
             :data="recentOptionLogs.logs"
+            v-loading="pageLoading"
             border
             :hover="false"
             style="width: 100%">
@@ -97,21 +98,21 @@
               width="240">
             </el-table-column>
             <el-table-column
-              prop="targetType"
+              prop="targetText"
               label="操作对象"
               width="180">
             </el-table-column>
             <el-table-column label="操作前的值">
               <template slot-scope="scope">
-                 <pre v-if="scope.row.beforeValue"><code>{{ scope.row.beforeValue }}</code></pre>
-                 <span v-if="!scope.row.beforeValue">null</span>
-              </template>
+  <pre v-if="scope.row.beforeValue"><code>{{ scope.row.beforeValue }}</code></pre>
+  <span v-if="!scope.row.beforeValue">null</span>
+</template>
             </el-table-column>
             <el-table-column label="操作后的值">
-              <template slot-scope="scope">          
-                 <pre v-if="scope.row.afterValue"><code>{{ scope.row.afterValue }}</code></pre>
-                 <span v-if="!scope.row.afterValue">null</span>
-              </template>
+              <template slot-scope="scope">
+  <pre v-if="scope.row.afterValue"><code>{{ scope.row.afterValue }}</code></pre>
+  <span v-if="!scope.row.afterValue">null</span>
+</template>
             </el-table-column>
           </el-table>
         </c-panel>
@@ -125,6 +126,8 @@ import * as api from './../../src/api';
 import * as codes from './../../src/codes';
 import ActivityChart from './data/charts/basic.vue';
 import data from './data/data.json';
+import dateFormat from 'dateformat';
+
 export default {
   name: 'HomeView',
   components: {
@@ -132,6 +135,7 @@ export default {
   },
   data() {
     return {
+      pageLoading: false,
       users: data.users,
       orders: data.orders,
       accountsCount: 0,
@@ -145,6 +149,7 @@ export default {
     };
   },
   async mounted() {
+    this.pageLoading = true;
     let res = await api.GetPageDashboardParams();
     if (res.code === codes.Success) {
       this.accountsCount = res.data.accountsCount;
@@ -152,7 +157,14 @@ export default {
       this.rolesCount = res.data.rolesCount;
       this.permissionsCount = res.data.permissionsCount;
       this.recentOptionLogs = res.data.recentOptionLogs;
+      res.data.recentOptionLogs.logs.forEach(elem => {
+        elem.createdAt = dateFormat(
+          new Date(elem.createdAt),
+          'yyyy-mm-dd HH:MM:ss'
+        );
+      });
     }
+    this.pageLoading = false;
   },
   methods: {
     slice(prop, start, end) {

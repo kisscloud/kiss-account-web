@@ -23,7 +23,7 @@ export default function () {
   let target = window.config.ACCOUNT_CENTER_HOST;
 
   if (redirect) {
-    if (window.location.href.indexOf('/auth/') === -1) {
+    if (window.location.href.indexOf('/auth/') === -1 && (window.location.href.indexOf('/install/') === -1)) {
       toast.info({
         message: '请重新登录',
         position: 'topRight',

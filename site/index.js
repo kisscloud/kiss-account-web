@@ -68,7 +68,6 @@ const hidePageLoader = () => {
 };
 
 router.beforeEach((to, from, next) => {
-
   showPageLoader();
   next();
 });

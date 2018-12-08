@@ -3,18 +3,19 @@
     <header class="toolbar">
       <c-level>
         <template slot="left">
-                  <div class="cell">
-                    <div class="cell__content">
-                      <h1 class="toolbar__title">用户管理 <span>管理平台的部门和用户</span></h1>
-                    </div>
-                  </div>
+          <div class="cell">
+            <div class="cell__content">
+              <h1 class="toolbar__title">
+                用户管理
+                <span>管理平台的部门和用户</span>
+              </h1>
+            </div>
+          </div>
         </template>
 
         <template slot="right">
           <el-dropdown @command="handleCommand">
-            <el-button type="primary" size="small">
-              添加
-            </el-button>
+            <el-button type="primary" size="small">添加</el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="account">添加用户</el-dropdown-item>
               <el-dropdown-item command="group">添加部门</el-dropdown-item>
@@ -23,86 +24,74 @@
         </template>
       </c-level>
     </header>
-    
-    
-    <el-container>
 
-      <el-aside style="">
+    <el-container>
+      <el-aside>
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-              <span>部门列表</span>
+            <span>部门列表</span>
           </div>
           <el-tree
-          :data="groupTree"
-          node-key="id"
-          ref="groupTree"
-          default-expand-all
-          @node-drag-start="handleDragStart"
-          @node-drag-enter="handleDragEnter"
-          @node-drag-leave="handleDragLeave"
-          @node-drag-over="handleDragOver"
-          @node-drag-end="handleDragEnd"
-          @node-drop="handleDrop"
-          @node-click="clickGroup"
-          :expand-on-click-node="false"
-          :highlight-current="true"
-          :allow-drop="allowDrop"
-          :allow-drag="allowDrag">
-          <span class="custom-tree-node" slot-scope="{ node, data }">
-                  <span>{{ node.label }}</span>
-                  <span>
-                    <el-button
-                      v-if="data.id !== 0"
-                      type="text"
-                      class="icon-pen5"
-                      @click="openEditGroup(data)"
-                      size="mini">
-                    </el-button>
-                  </span>
-           </span>
+            :data="groupTree"
+            node-key="id"
+            ref="groupTree"
+            default-expand-all
+            @node-drag-start="handleDragStart"
+            @node-drag-enter="handleDragEnter"
+            @node-drag-leave="handleDragLeave"
+            @node-drag-over="handleDragOver"
+            @node-drag-end="handleDragEnd"
+            @node-drop="handleDrop"
+            @node-click="clickGroup"
+            :expand-on-click-node="false"
+            :highlight-current="true"
+            :allow-drop="allowDrop"
+            :allow-drag="allowDrag"
+          >
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+              <span>{{ node.label }}</span>
+              <span>
+                <el-button
+                  v-if="data.id !== 0"
+                  type="text"
+                  class="icon-pen5"
+                  @click="openEditGroup(data)"
+                  size="mini"
+                ></el-button>
+              </span>
+            </span>
           </el-tree>
-          </el-card>
+        </el-card>
       </el-aside>
-    
+
       <el-main>
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-              <span>用户列表</span>
+            <span>用户列表</span>
           </div>
-          <el-table
-            :data="showAccounts"
-            border
-            style="width: 100%">
-            <el-table-column
-              prop="name"
-              label="姓名"
-              width="180">
+          <el-table v-loading="pageLoading" :data="showAccounts" border style="width: 100%">
+            <el-table-column prop="name" label="姓名" width="180"></el-table-column>
+            <el-table-column label="部门" width="180">
+               <span slot-scope="scope">{{ scope.row.groupName || '-' }}</span>
             </el-table-column>
-            <el-table-column
-              prop="groupName"
-              label="部门"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="email"
-              label="邮箱">
-            </el-table-column>
-            <el-table-column
-              prop="mobile"
-              label="电话">
-            </el-table-column>
-            <el-table-column
-              prop="statusText"
-              label="状态">
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="操作"
-              width="180">
+            <el-table-column prop="email" label="邮箱"></el-table-column>
+            <el-table-column prop="mobile" label="电话"></el-table-column>
+            <el-table-column prop="statusText" label="状态"></el-table-column>
+            <el-table-column align="center" label="操作" width="180">
               <span slot-scope="scope" style="text-align: center;display: block;width: 100%;">
                 <el-button type="text" size="mini" @click="openEditAccount(scope.row)">编辑</el-button>
-                <el-button v-show="scope.row.status === 1" type="text" size="mini" @click="clickDimission(scope.row)">离职</el-button>
-                <el-button v-show="scope.row.status === 2" type="text" size="mini" @click="clickResume(scope.row)">复职</el-button>
+                <el-button
+                  v-show="scope.row.status === 1"
+                  type="text"
+                  size="mini"
+                  @click="clickDimission(scope.row)"
+                >离职</el-button>
+                <el-button
+                  v-show="scope.row.status === 2"
+                  type="text"
+                  size="mini"
+                  @click="clickResume(scope.row)"
+                >复职</el-button>
                 <el-button type="text" size="mini" @click="clickResetPassword(scope.row)">重置密码</el-button>
               </span>
             </el-table-column>
@@ -110,12 +99,27 @@
         </el-card>
       </el-main>
     </el-container>
-    
+
     <el-dialog :title="userForm.id ? '编辑用户':'添加用户'" :visible.sync="showUserFormModal">
-      <el-form :model="userForm" :rules="userFormRules" ref="userForm" :validate-on-rule-change="false">
+      <el-form
+        :model="userForm"
+        :rules="userFormRules"
+        ref="userForm"
+        :validate-on-rule-change="false"
+      >
         <el-form-item label="部门" :label-width="formLabelWidth" prop="groupId">
-          <el-select filterable v-model="userForm.groupId" placeholder="请选择用户所属部门" style="width:100%;">
-            <el-option v-for="item in userFormGroups" v-bind:key="'userGroup'+item.id" :label="item.name" :value="item.id"></el-option>
+          <el-select
+            filterable
+            v-model="userForm.groupId"
+            placeholder="请选择用户所属部门"
+            style="width:100%;"
+          >
+            <el-option
+              v-for="item in userFormGroups"
+              v-bind:key="'userGroup'+item.id"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="姓名" :label-width="formLabelWidth" prop="name">
@@ -130,10 +134,20 @@
         <el-form-item label="手机" :label-width="formLabelWidth" prop="mobile">
           <el-input v-model="userForm.mobile" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item v-show="!userForm.id" label="密码" :label-width="formLabelWidth" prop="password">
+        <el-form-item
+          v-show="!userForm.id"
+          label="密码"
+          :label-width="formLabelWidth"
+          prop="password"
+        >
           <el-input type="password" v-model="userForm.password" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item v-show="!userForm.id" label="重复密码" :label-width="formLabelWidth" prop="repeatPassword">
+        <el-form-item
+          v-show="!userForm.id"
+          label="重复密码"
+          :label-width="formLabelWidth"
+          prop="repeatPassword"
+        >
           <el-input type="password" v-model="userForm.repeatPassword" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -144,10 +158,25 @@
     </el-dialog>
 
     <el-dialog :title="groupForm.id ? '编辑部门':'添加部门'" :visible.sync="showGroupFormModal">
-      <el-form :model="groupForm" :rules="groupFormRules" ref="groupForm" :validate-on-rule-change="false">
+      <el-form
+        :model="groupForm"
+        :rules="groupFormRules"
+        ref="groupForm"
+        :validate-on-rule-change="false"
+      >
         <el-form-item label="父部门" :label-width="formLabelWidth">
-          <el-select v-model="groupForm.parentId" filterable placeholder="请选择父部门" style="width:100%;">
-            <el-option v-for="item in groupFormGroups" v-bind:key="'groupFromGroups'+item.id" :label="item.name" :value="item.id"></el-option>
+          <el-select
+            v-model="groupForm.parentId"
+            filterable
+            placeholder="请选择父部门"
+            style="width:100%;"
+          >
+            <el-option
+              v-for="item in groupFormGroups"
+              v-bind:key="'groupFromGroups'+item.id"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="部门名称" :label-width="formLabelWidth" prop="name">
@@ -264,6 +293,7 @@ export default {
   name: 'Persmissionaccounts',
   data() {
     return {
+      pageLoading: false,
       showUserFormModal: false,
       showGroupFormModal: false,
       formLabelWidth: '80px',
@@ -286,16 +316,19 @@ export default {
     };
   },
   async mounted() {
+    this.pageLoading = true;
     let res = await api.GetPagePermissonsAccountsParams();
     if (res.code === codes.Success) {
-      res.data.accounts.accounts.forEach(element => {
-        this.accounts.push(merge({}, element));
-        this.showAccounts.push(merge({}, element));
-      });
+      if (res.data.accounts) {
+        res.data.accounts.accounts.forEach(element => {
+          this.accounts.push(merge({}, element));
+          this.showAccounts.push(merge({}, element));
+        });
+        this.accountsCount = res.data.accounts.count;
+      }
       res.data.groups.forEach(element => {
         this.userFormGroups.push(merge({}, element));
       });
-      this.accountsCount = res.data.accounts.count;
 
       this.appendGroupTreeNode({
         id: 0,
@@ -309,6 +342,7 @@ export default {
         this.groupFormGroups.push(element);
         this.appendGroupTreeNode(element);
       });
+      this.pageLoading = false;
     }
   },
   methods: {

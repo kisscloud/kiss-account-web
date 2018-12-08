@@ -1,14 +1,17 @@
 <template>
   <c-main id="page-logs">
-   <header class="toolbar">
+    <header class="toolbar">
       <c-level>
         <template slot="left">
           <div class="cell">
             <!-- <div class="cell__media">
               <i class="icon-footprint"></i>
-            </div> -->
+            </div>-->
             <div class="cell__content">
-              <h1 class="toolbar__title">操作日志 <span>用户带有权限的操作日志</span></h1>
+              <h1 class="toolbar__title">
+                操作日志
+                <span>用户带有权限的操作日志</span>
+              </h1>
             </div>
           </div>
         </template>
@@ -19,80 +22,64 @@
                 <c-form-input icon-start="icon-search"></c-form-input>
               </c-form-field>
             </c-form>
-          </c-level-item> -->
+          </c-level-item>-->
         </template>
       </c-level>
     </header>
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-              <span>日志列表</span>
-          </div>
-          <div v-show="size>10">
-          <br>
-          <el-pagination
-            background
-            layout="prev, pager, next,sizes"
-            @size-change="handleSizeChange"
-            @current-change="getResult"
-            :page-sizes="[10, 50, 100]"      
-            :page-size="size"
-            :total="count">
-          </el-pagination>
-          <br>
-          </div>
-          <el-table
-            :data="logs"
-            border
-            :hover="false"
-            style="width: 100%">
-            <el-table-column
-              prop="operatorName"
-              label="擦作者"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="createdAt"
-              label="操作时间"
-              width="240">
-            </el-table-column>
-            <el-table-column
-              prop="targetType"
-              label="操作对象"
-              width="180">
-            </el-table-column>
-            <el-table-column label="操作前的值">
-              <template slot-scope="scope">
-                 <pre v-if="scope.row.beforeValue"><code>{{ scope.row.beforeValue }}</code></pre>
-                 <span v-if="!scope.row.beforeValue">null</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="操作后的值">
-              <template slot-scope="scope">          
-                 <pre v-if="scope.row.afterValue"><code>{{ scope.row.afterValue }}</code></pre>
-                 <span v-if="!scope.row.afterValue">null</span>
-              </template>
-            </el-table-column>
-            <!-- <el-table-column
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>日志列表</span>
+      </div>
+      <div v-show="size>10">
+        <br>
+        <el-pagination
+          background
+          layout="prev, pager, next,sizes"
+          @size-change="handleSizeChange"
+          @current-change="getResult"
+          :page-sizes="[10, 50, 100]"
+          :page-size="size"
+          :total="count"
+        ></el-pagination>
+        <br>
+      </div>
+      <el-table v-loading="pageLoading" :data="logs" border :hover="false" style="width: 100%">
+        <el-table-column prop="operatorName" label="擦作者" width="180"></el-table-column>
+        <el-table-column prop="createdAt" label="操作时间" width="240"></el-table-column>
+        <el-table-column prop="targetText" label="操作对象" width="180"></el-table-column>
+        <el-table-column label="操作前的值">
+          <template slot-scope="scope">
+            <pre v-if="scope.row.beforeValue"><code>{{ scope.row.beforeValue }}</code></pre>
+            <span v-if="!scope.row.beforeValue">null</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作后的值">
+          <template slot-scope="scope">
+            <pre v-if="scope.row.afterValue"><code>{{ scope.row.afterValue }}</code></pre>
+            <span v-if="!scope.row.afterValue">null</span>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column
               fixed="right"
               label="操作"
               width="100">
               <template slot-scope="scope">
                 <el-button type="text" size="small">恢复</el-button>
               </template>
-            </el-table-column> -->
-          </el-table>
-          <br>
-          <el-pagination
-            background
-            layout="prev, pager, next,sizes"
-            @size-change="handleSizeChange"
-            @current-change="getResult"
-            :page-sizes="[10, 50, 100]"      
-            :page-size="size"
-            :total="count">
-          </el-pagination>
-          <br>
-        </el-card>
+        </el-table-column>-->
+      </el-table>
+      <br>
+      <el-pagination
+        background
+        layout="prev, pager, next,sizes"
+        @size-change="handleSizeChange"
+        @current-change="getResult"
+        :page-sizes="[10, 50, 100]"
+        :page-size="size"
+        :total="count"
+      ></el-pagination>
+      <br>
+    </el-card>
   </c-main>
 </template>
 
@@ -100,10 +87,12 @@
 import Vue from 'vue';
 import * as api from './../../../src/api';
 import * as codes from './../../../src/codes';
+import dateFormat from 'dateformat';
 
 export default {
   data() {
     return {
+      pageLoading: false,
       logs: [],
       size: 10,
       count: 0
@@ -114,14 +103,22 @@ export default {
   },
   methods: {
     async getResult(page) {
+      this.pageLoading = true;
       let res = await api.GetOperationLogs({
         page: page,
         size: this.size
       });
       if (res.code === codes.Success) {
+        res.data.logs.forEach(elem => {
+          elem.createdAt = dateFormat(
+            new Date(elem.createdAt),
+            'yyyy-mm-dd HH:MM:ss'
+          );
+        });
         this.logs = res.data.logs;
         this.count = res.data.count;
       }
+      this.pageLoading = false;
     },
     handleSizeChange(size) {
       this.size = size;

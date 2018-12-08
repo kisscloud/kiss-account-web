@@ -5,11 +5,12 @@ import HomeView from './home.vue';
 const AuthLogin = () => import('./pages/login.vue');
 const TwoFactor = () => import('./pages/two-factor.vue');
 const RegisterView = () => import('./pages/register.vue');
+const RootView = () => import('./pages/root.vue');
 const ForgotView = () => import('./pages/forgot.vue');
 const ResetView = () => import('./pages/reset.vue');
 const ErrorView = () => import('./pages/error.vue');
 
-const PermissionUsers = () => import('./permission/users.vue');
+const PermissionAccounts = () => import('./permission/accounts.vue');
 const PermissionPermissions = () => import('./permission/permissions.vue');
 const PermissionRoles = () => import('./permission/roles.vue');
 const PermissionLogs = () => import('./permission/logs.vue');
@@ -26,6 +27,10 @@ export default [{
   {
     path: '/auth/register',
     component: RegisterView
+  },
+  {
+    path: '/install/root',
+    component: RootView
   },
   {
     path: '/auth/forgot',
@@ -54,7 +59,7 @@ export default [{
       },
       {
         path: '/permission/accounts',
-        component: PermissionUsers
+        component: PermissionAccounts
       },
       {
         path: '/permission/permissions',

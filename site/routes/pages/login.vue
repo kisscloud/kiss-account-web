@@ -3,7 +3,7 @@
     <c-content>
       <section class="sign u-m-auto">
         <h1 class="sign__title">统一账户中心</h1>
-          <p class="sign__text">Kiss Cloud</p>
+        <p class="sign__text">KISS CLOUD</p>
         <div class="sign__body">
           <!-- <h1 class="sign__title">Kiss Console</h1> -->
           <!-- <p class="sign__text">统一授权中心</p> -->
@@ -27,7 +27,7 @@
             <a href="#" class="u-color-muted u-ml-10 u-mr-10"><i class="icon-facebook2"></i></a>
             <a href="#" class="u-color-muted u-ml-10 u-mr-10"><i class="icon-twitter"></i></a>
             <a href="#" class="u-color-muted u-ml-10 u-mr-10"><i class="icon-github"></i></a>
-          </div> -->
+          </div>-->
         </div>
         <footer class="sign__footer u-text-center">
           <p class="u-text-muted u-fs-12">LD Capital © 2017-2018. All RIGHT RESERVED.</p>
@@ -55,10 +55,16 @@ export default {
       target: ''
     };
   },
-  mounted() {
+  async mounted() {
     this.form.clientId = this.$route.query.client_id;
     this.source = this.$route.query.source;
     this.target = this.$route.query.target;
+    let res = await api.CheckRoot();
+    if (res.code === codes.Success) {
+      if (!res.data.rootExist) {
+        this.$router.push({ path: '/install/root' });
+      }
+    }
   },
   methods: {
     async login() {

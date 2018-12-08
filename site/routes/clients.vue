@@ -5,25 +5,25 @@
         <template slot="left">
           <div class="cell">
             <div class="cell__content">
-              <h1 class="toolbar__title">授权管理<span>子系统接入授权管理</span></h1>
+              <h1 class="toolbar__title">
+                授权管理
+                <span>子系统接入授权管理</span>
+              </h1>
             </div>
           </div>
         </template>
 
         <template slot="right">
-          <el-button @click="openClientFormModal()" type="primary" size="small">
-            添加客户端
-          </el-button>
+          <el-button @click="openClientFormModal()" type="primary" size="small">添加客户端</el-button>
         </template>
       </c-level>
     </header>
-    
-    <el-container>
 
-      <el-aside style="">
+    <el-container>
+      <el-aside style>
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-              <span>客户端列表</span>
+            <span>客户端列表</span>
           </div>
           <el-table
             :data="clients"
@@ -31,111 +31,123 @@
             :show-header="false"
             :highlight-current-row="true"
             @current-change="handleCurrentChange"
-            style="width: 100%">
-            <el-table-column
-              prop="clientName"
-              label="客户端名称"
-              >
-            </el-table-column>
-             <el-table-column
-              width="60px"
-              align="right"
-              label="操作">
+            style="width: 100%"
+          >
+            <el-table-column prop="clientName" label="客户端名称"></el-table-column>
+            <el-table-column width="60px" align="right" label="操作">
               <span slot-scope="scope" style="float:right;">
-                <el-button @click="openEditClientModal(scope.row)" class="icon-pen5" type="text" size="mini"></el-button>
+                <el-button
+                  @click="openEditClientModal(scope.row)"
+                  class="icon-pen5"
+                  type="text"
+                  size="mini"
+                ></el-button>
               </span>
             </el-table-column>
           </el-table>
-          </el-card>
+        </el-card>
       </el-aside>
 
       <el-main>
-          <el-tabs type="border-card" v-model="tabActiveName">
-            <el-tab-pane label="权限模块" name="first">
-              <el-tree
-                :data="moduleTree"
-                ref="moduleTree"
-                show-checkbox
-                node-key="id"
-                :default-expand-all="true"
-                :default-checked-keys="selectModules"
-                :props="defaultProps">
-                <span class="custom-tree-node" slot-scope="{ node, data }">
-                  <span>{{ data.label }}</span>
+        <el-tabs v-loading="pageLoading" type="border-card" v-model="tabActiveName">
+          <el-tab-pane label="客户端信息" name="first">
+            <dl class="client-info">
+              <li>
+                <dt>客户端名称</dt>
+                <dd>{{ selectClient.clientName }}</dd>
+              </li>
+              <li>
+                <dt>Client ID</dt>
+                <dd>{{ selectClient.clientId }}</dd>
+              </li>
+              <li>
+                <dt>Client Secret</dt>
+                <dd>
+                  {{ selectClient.clientSecret || '********' }}
+                  <el-button
+                    @click="openPasswordModal()"
+                    type="text"
+                    size="mini"
+                    class="icon-eye"
+                    circle
+                  ></el-button>
+                </dd>
+              </li>
+            </dl>
+          </el-tab-pane>
+          <el-tab-pane label="权限模块" name="second">
+            <el-tree
+              :data="moduleTree"
+              ref="moduleTree"
+              show-checkbox
+              node-key="id"
+              :default-expand-all="true"
+              :default-checked-keys="selectModules"
+              :props="defaultProps"
+            >
+              <span class="custom-tree-node" slot-scope="{ node, data }">
+                <span>{{ data.label }}</span>
+              </span>
+            </el-tree>
+            <br>
+            <el-button
+              v-show="moduleTree.length != 0"
+              size="small"
+              type="primary"
+              @click="saveModules()"
+            >绑定模块</el-button>
+          </el-tab-pane>
+          <el-tab-pane label="授权对象" name="thrid">
+            <el-table :data="authServers" id="authServersTable">
+              <el-table-column prop="ip" label="IP 地址" min-width="120"></el-table-column>
+              <el-table-column prop="remark" width="180" label="备注"></el-table-column>
+              <el-table-column width="180" align="center" label="操作">
+                <span slot-scope="scope" style="text-align: center;display: block;width: 100%;">
+                  <el-button type="text" size="mini" @click="deleteAuthServer(scope.row)">删除</el-button>
                 </span>
-              </el-tree>
-              <br>
-              <el-button v-show="moduleTree.length != 0" size="small" type="primary" @click="saveModules()">绑定模块</el-button>
-            </el-tab-pane>
-            <el-tab-pane label="客户端信息" name="second">
-              <dl class="client-info">
-                <li>
-                  <dt>客户端名称</dt>
-                  <dd>{{ selectClient.clientName }}</dd>
-                </li>
-                <li>
-                  <dt>Client ID</dt>
-                  <dd>{{ selectClient.clientId }}</dd>
-                </li>
-                <li>
-                  <dt>Client Secret</dt>
-                  <dd>{{ selectClient.clientSecret || '********' }}  <el-button @click="openPasswordModal()" type="text"  size="mini" class="icon-eye" circle></el-button></dd>
-                </li>
-              </dl>
-            </el-tab-pane>
-            <el-tab-pane label="授权对象" name="thrid">              
-              <el-table
-                :data="authServers"
-                id="authServersTable"
-                >
-                <el-table-column
-                  prop="ip"
-                  label="IP 地址"
-                  min-width="120"
-                  >
-                </el-table-column>
-                <el-table-column
-                  prop="remark"
-                  width="180"
-                  label="备注"
-                >
-                </el-table-column>
-                <el-table-column
-                  width="180"
-                  align="center"
-                  label="操作">
-                  <span slot-scope="scope" style="text-align: center;display: block;width: 100%;">
-                    <el-button type="text" size="mini" @click="deleteAuthServer(scope.row)">删除</el-button>
-                  </span>
-                </el-table-column>                
-              </el-table>           
-              <el-button size="small" type="text" style="margin-left:7px;margin-top:10px;">添加对象</el-button>   
-            </el-tab-pane>
-          </el-tabs>
+              </el-table-column>
+            </el-table>
+            <el-button size="small" type="text" style="margin-left:7px;margin-top:10px;">添加对象</el-button>
+          </el-tab-pane>
+        </el-tabs>
       </el-main>
     </el-container>
 
     <el-dialog :title="clientForm.id? '编辑客户端': '添加客户端'" :visible.sync="showClientFormModal">
-      <el-form :model="clientForm" :rules="clientFormRules" ref="clientForm" :validate-on-rule-change="false">
+      <el-form
+        :model="clientForm"
+        :rules="clientFormRules"
+        ref="clientForm"
+        :validate-on-rule-change="false"
+      >
         <el-form-item label="客户端名称" label-width="120px" prop="clientName">
           <el-input v-model="clientForm.clientName" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="客户端状态" label-width="120px">
-          <el-radio-group  v-model="clientForm.status">
+          <el-radio-group v-model="clientForm.status">
             <el-radio label="1">有效</el-radio>
             <el-radio label="0">无效</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button v-show="clientForm.id" @click="deleteClient(clientForm)" style="float:left;">删除客户端</el-button>
+        <el-button
+          v-show="clientForm.id"
+          @click="deleteClient(clientForm)"
+          style="float:left;"
+        >删除客户端</el-button>
         <el-button @click="showClientFormModal = false">取 消</el-button>
         <el-button type="primary" @click="submitClientForm()">{{ clientForm.id? '保存': '添加' }}</el-button>
       </div>
     </el-dialog>
 
     <el-dialog title="查看私钥" :visible.sync="showPassowrdFormModal" width="40%">
-      <el-form :model="passwordForm" :rules="passwordFormRules" ref="passwordForm" :validate-on-rule-change="false">
+      <el-form
+        :model="passwordForm"
+        :rules="passwordFormRules"
+        ref="passwordForm"
+        :validate-on-rule-change="false"
+      >
         <el-form-item label="用户密码" label-width="120px" prop="password">
           <el-input type="password" v-model="passwordForm.password" autocomplete="off"></el-input>
         </el-form-item>
@@ -145,7 +157,6 @@
         <el-button type="primary" @click="submitPasswordForm()">查看</el-button>
       </div>
     </el-dialog>
-
   </c-main>
 </template>
 
@@ -166,6 +177,7 @@ export default {
   name: 'Clients',
   data() {
     return {
+      pageLoading: false,
       showClientFormModal: false,
       showClientModuleModal: false,
       showPassowrdFormModal: false,
@@ -221,6 +233,7 @@ export default {
     };
   },
   async mounted() {
+    this.pageLoading = true;
     let res = await api.GetPageClientsParams();
 
     if (res.code === codes.Success) {
@@ -229,6 +242,7 @@ export default {
       this.modules = res.data.allModules || [];
       this.generateModuleTree();
     }
+    this.pageLoading = false;
   },
   methods: {
     submitClientForm() {
@@ -419,6 +433,7 @@ export default {
     },
     async handleCurrentChange(val) {
       this.selectClient = val;
+      this.pageLoading = true;
       let res = await api.GetClientModules({
         id: val.id
       });
@@ -440,6 +455,7 @@ export default {
           type: 'warning'
         });
       }
+      this.pageLoading = false;
     },
     deleteClient(client) {
       let $this = this;
