@@ -14,7 +14,7 @@ module.exports = merge(baseWebpackConfig, {
     app: path.join(__dirname, '../site/index.js')
   },
   output: {
-    path: path.resolve(__dirname, '../docs'),
+    path: path.resolve(__dirname, '../dist'),
     publicPath: isProd ? './' : '/',
     filename: 'js/[name].js?[hash:8]',
     chunkFilename: 'js/[name].chunk.js?[chunkhash:8]'

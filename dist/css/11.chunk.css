@@ -1,0 +1,22 @@
+
+#page-logs .el-card__body {
+  padding: 0;
+}
+#page-logs .el-table {
+  border-style: none;
+  border-radius: 0;
+}
+#page-logs .el-table td,
+#page-logs .el-table th {
+  padding: 5px;
+}
+#page-logs .el-table__body tr.hover-row.el-table__row--striped > td,
+#page-logs .el-table__body tr.hover-row > td {
+  background-color: transparent !important;
+}
+#page-logs pre {
+  margin-bottom: 0;
+  padding: 15px;
+  border-radius: 5px;
+}
+

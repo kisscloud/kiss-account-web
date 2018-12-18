@@ -1,0 +1,67 @@
+
+#page-clients .el-aside {
+  padding-right: 30px;
+}
+#page-clients .el-aside .el-card__body {
+    padding: 0;
+}
+#page-clients .el-aside .el-table {
+    border-style: none;
+    border-radius: 0;
+}
+#page-clients .el-aside .el-table th,
+  #page-clients .el-aside .el-table tr {
+    cursor: pointer;
+}
+#page-clients .el-main {
+  padding: 0;
+}
+#page-clients .el-main .el-card__body {
+    padding: 0;
+}
+#page-clients .el-main .el-table {
+    border-style: none;
+    border-radius: 0;
+}
+#page-clients .el-table td,
+#page-clients .el-table th {
+  padding: 5px;
+}
+#page-clients .el-transfer-panel {
+  width: calc(50% - 62px);
+}
+#page-clients .icon-pencil {
+  font-size: 13px;
+}
+#page-clients .icon-pen5 {
+  color: #409eff;
+  font-size: 12px;
+  visibility: hidden;
+}
+#page-clients .el-table__row:hover .icon-pen5 {
+  visibility: visible;
+}
+#page-clients .client-info {
+  padding: 20px;
+}
+#page-clients .client-info dt,
+  #page-clients .client-info dd {
+    float: left;
+}
+#page-clients .client-info li {
+    list-style: none;
+    overflow: hidden;
+    line-height: 40px;
+}
+#page-clients .client-info dt {
+    width: 100px;
+    color: #717171;
+    text-align: right;
+}
+#page-clients .icon-eye {
+  color: #000;
+}
+#page-clients #authServersTable .cell {
+  padding-left: 0;
+}
+

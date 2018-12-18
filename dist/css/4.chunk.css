@@ -1,0 +1,28 @@
+
+#page-install-root .sign {
+  top: -100px;
+}
+#page-install-root .sign__title {
+  font-size: 22px;
+}
+#page-install-root .sign__footer {
+  /* margin-top: 16px; */
+  position: fixed;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+}
+#page-install-root .el-form-item {
+  margin-bottom: 0;
+}
+#page-install-root .el-form-item__label {
+  margin-bottom: -5px;
+}
+#page-install-root .el-form-item__error {
+  left: auto;
+  right: 0;
+}
+#page-install-root .el-input__suffix {
+  display: none;
+}
+

@@ -1,0 +1,15 @@
+
+#page-login .sign {
+  top: -140px;
+}
+#page-login .sign__title {
+  font-size: 22px;
+}
+#page-login .sign__footer {
+  /* margin-top: 16px; */
+  position: fixed;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+}
+

@@ -1,0 +1,108 @@
+
+#page-roles .el-aside {
+  padding-right: 30px;
+}
+#page-roles .el-aside .el-card__body {
+    padding: 0;
+}
+#page-roles .el-aside .el-table {
+    border-style: none;
+    border-radius: 0;
+}
+#page-roles .el-aside .el-table th,
+  #page-roles .el-aside .el-table tr {
+    cursor: pointer;
+}
+#page-roles .el-main {
+  padding: 0;
+}
+#page-roles .el-main .el-card__body {
+    padding: 0;
+}
+#page-roles .el-main .el-table {
+    border-style: none;
+    border-radius: 0;
+}
+#page-roles .el-table td,
+#page-roles .el-table th {
+  padding: 5px;
+}
+#page-roles .el-transfer-panel {
+  width: calc(50% - 62px);
+}
+#page-roles .icon-pencil {
+  font-size: 13px;
+}
+#page-roles .icon-pen5 {
+  color: #409eff;
+  font-size: 12px;
+  visibility: hidden;
+}
+#page-roles .el-table__row:hover .icon-pen5 {
+  visibility: visible;
+}
+#page-roles .custom-tree-node {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+}
+#page-roles .custom-tree-node .el-button--text {
+    color: #a2a2a2;
+}
+#page-roles .option-type {
+  position: relative;
+  top: 1px;
+  width: 40px;
+}
+#page-roles .permission-code {
+  width: 350px;
+  text-align: left;
+  overflow: hidden;
+}
+#page-roles .permission-description {
+  min-width: 200px;
+  text-align: left;
+}
+#page-roles .limit-fields {
+  margin-bottom: -16px;
+  font-size: 12px;
+  color: #909090;
+}
+#page-roles .el-input.is-disabled .el-input__inner {
+  color: #777777;
+}
+#page-roles .el-transfer-panel:first-child {
+  position: absolute;
+  right: 15px;
+}
+#page-roles .el-transfer__buttons {
+  position: absolute;
+  right: calc(50% - 54px);
+  top: 30%;
+}
+#page-roles .el-transfer__button:first-child {
+  position: absolute;
+}
+#page-roles .el-transfer__button:last-child {
+  margin-top: 50px;
+}
+#page-roles .el-icon-arrow-left:before,
+#page-roles .el-icon-arrow-right:before {
+  display: none;
+}
+#page-roles .el-transfer-panel__body,
+#page-roles .el-transfer-panel__list.is-filterable {
+  height: 400px;
+}
+

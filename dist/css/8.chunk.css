@@ -1,0 +1,52 @@
+
+#page-accounts .el-aside {
+  padding-right: 20px;
+}
+#page-accounts .el-main {
+  padding: 0;
+}
+#page-accounts .el-main .el-card__body {
+    padding: 0;
+}
+#page-accounts .el-main .el-table {
+    border-style: none;
+    border-radius: 0;
+}
+#page-accounts .el-table td,
+#page-accounts .el-table th {
+  padding: 5px;
+}
+#page-accounts .el-dropdown-menu__item {
+  padding: 0;
+}
+#page-accounts .el-dropdown-menu span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: red;
+}
+#page-accounts .custom-tree-node {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+}
+#page-accounts .custom-tree-node .el-button--text {
+    color: #409eff;
+    font-size: 12px;
+    display: none;
+}
+#page-accounts .custom-tree-node:hover .el-button--text {
+    display: initial;
+}
+

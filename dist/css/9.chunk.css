@@ -1,0 +1,43 @@
+
+#page-permissions .el-aside {
+  padding-right: 30px;
+}
+#page-permissions .el-main {
+  padding: 0;
+}
+#page-permissions .el-main .el-card__body {
+    padding: 0;
+}
+#page-permissions .el-main .el-table {
+    border-style: none;
+    border-radius: 0;
+}
+#page-permissions .el-table td,
+#page-permissions .el-table th {
+  padding: 5px;
+}
+#page-permissions .custom-tree-node {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+}
+#page-permissions .custom-tree-node .el-button--text {
+    color: #409eff;
+    font-size: 12px;
+    display: none;
+}
+#page-permissions .custom-tree-node:hover .el-button--text {
+    display: initial;
+}
+
