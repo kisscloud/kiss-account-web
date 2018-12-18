@@ -6,8 +6,8 @@
           <div class="cell">
             <div class="cell__content">
               <h1 class="toolbar__title">
-                用户管理
-                <span>管理平台的部门和用户</span>
+                成员管理
+                <span>管理平台的部门和成员</span>
               </h1>
             </div>
           </div>
@@ -17,7 +17,7 @@
           <el-dropdown @command="handleCommand">
             <el-button type="primary" size="small">添加</el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="account">添加用户</el-dropdown-item>
+              <el-dropdown-item command="account">添加成员</el-dropdown-item>
               <el-dropdown-item command="group">添加部门</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -67,7 +67,7 @@
       <el-main>
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>用户列表</span>
+            <span>成员列表</span>
           </div>
           <el-table v-loading="pageLoading" :data="showAccounts" border style="width: 100%">
             <el-table-column prop="name" label="姓名" width="180"></el-table-column>
@@ -100,7 +100,7 @@
       </el-main>
     </el-container>
 
-    <el-dialog :title="userForm.id ? '编辑用户':'添加用户'" :visible.sync="showUserFormModal">
+    <el-dialog :title="userForm.id ? '编辑成员':'添加成员'" :visible.sync="showUserFormModal">
       <el-form
         :model="userForm"
         :rules="userFormRules"
@@ -111,7 +111,7 @@
           <el-select
             filterable
             v-model="userForm.groupId"
-            placeholder="请选择用户所属部门"
+            placeholder="请选择成员所属部门"
             style="width:100%;"
           >
             <el-option
@@ -125,7 +125,7 @@
         <el-form-item label="姓名" :label-width="formLabelWidth" prop="name">
           <el-input v-model="userForm.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="用户名" :label-width="formLabelWidth" prop="username">
+        <el-form-item label="成员名" :label-width="formLabelWidth" prop="username">
           <el-input v-model="userForm.username" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email">
@@ -254,7 +254,7 @@ var updateUserRules = {
   username: [
     {
       required: true,
-      message: '请输入用户名',
+      message: '请输入成员名',
       trigger: 'change'
     }
   ],
@@ -368,7 +368,7 @@ export default {
                 }
               }
               this.$message({
-                message: '用户更新成功',
+                message: '成员更新成功',
                 type: 'success'
               });
             } else if (res.code === codes.ValidateError) {
@@ -399,7 +399,7 @@ export default {
               this.accounts.push(res.data);
               this.showAccounts.push(res.data);
               this.$message({
-                message: '用户添加成功',
+                message: '成员添加成功',
                 type: 'success'
               });
             } else if (res.code === codes.ValidateError) {
