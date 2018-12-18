@@ -83,7 +83,7 @@ module.exports = merge(baseWebpackConfig, {
     new CopyWebpackPlugin([
       {
         from: path.resolve(__dirname, '../site/static'),
-        to: path.resolve(__dirname, '../docs/static'),
+        to: path.resolve(__dirname, '../dist/static'),
         ignore: ['.*']
       }
     ])
