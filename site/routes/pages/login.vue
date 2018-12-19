@@ -86,9 +86,9 @@ export default {
       let res = await api.AuthLogin(this.form);
       if (res.code === codes.Success) {
         if (this.source) {
-          window.location.href = this.getRedirectSource(
-            res.data.authorizationCode
-          );
+          let url = this.getRedirectSource(res.data.authorizationCode);
+          console.log(url);
+          window.location.href = url;
         } else {
           localStorage.setItem('accessToken', res.data.accessToken);
           localStorage.setItem('accessTokenExpiredAt', res.data.expiredAt);
