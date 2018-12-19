@@ -292,6 +292,9 @@ export default {
             if (res.code === codes.Success) {
               this.showClientFormModal = false;
               this.clients.push(res.data);
+              if (this.clients.length == 1) {
+                this.selectClient = res.data;
+              }
               this.$message({
                 message: '客户端添加成功',
                 type: 'success'
