@@ -51,7 +51,7 @@
       <el-main>
         <el-tabs v-loading="pageLoading" type="border-card" v-model="tabActiveName">
           <el-tab-pane label="客户端信息" name="first">
-            <dl class="client-info">
+            <dl v-show="clients.length>0" class="client-info">
               <li>
                 <dt>客户端名称</dt>
                 <dd>{{ selectClient.clientName }}</dd>
@@ -74,6 +74,7 @@
                 </dd>
               </li>
             </dl>
+            <div v-show="clients.length ===0" style="padding: 14px;color: #97999f;">暂无数据</div>
           </el-tab-pane>
           <el-tab-pane label="权限模块" name="second">
             <el-tree

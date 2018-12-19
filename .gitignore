@@ -4,3 +4,4 @@ docs
 npm-debug.log
 npm-debug.log.*
 .idea
+dist/static/env.js
