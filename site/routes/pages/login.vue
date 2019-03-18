@@ -82,24 +82,28 @@ export default {
         });
         return;
       }
-      this.loading = true;
-      try {
-        let res = await api.AuthLogin(this.form);
 
+      this.loading = true;
+
+      try {
+
+        let res = await api.AuthLogin(this.form);
+      
         if (this.source) {
-          let url = this.getRedirectSource(res.data.authorizationCode);
-          console.log(url);
+          let url = this.getRedirectSource(res.authorizationCode);
           window.location.href = url;
         } else {
-          localStorage.setItem('accessToken', res.data.accessToken);
-          localStorage.setItem('accessTokenExpiredAt', res.data.expiredAt);
+          localStorage.setItem('accessToken', res.accessToken);
+          localStorage.setItem('accessTokenExpiredAt', res.expiredAt);
           this.$router.push({ path: '/' });
         }
       } catch (e) {
         this.error(this, e);
       }
+
       this.loading = false;
     },
+
     getRedirectSource(authorizationCode) {
       let source = base64.decode(this.source);
       if (source.indexOf('?') !== '-1') {
