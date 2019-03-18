@@ -11,6 +11,7 @@ import './styles/global.scss';
 import permissions from './permissions';
 import can from '../src/services/can';
 import auth from '../src/auth';
+import message from '../src/services/message';
 
 auth();
 
@@ -22,6 +23,7 @@ Vue.use(ElementUI);
 Vue.use(VueRouter);
 Vue.use(Cover);
 Vue.use(can);
+Vue.use(message);
 
 window.toast = toast;
 
