@@ -83,8 +83,9 @@ export default {
         return;
       }
       this.loading = true;
-      let res = await api.AuthLogin(this.form);
-      if (res.code === codes.Success) {
+      try {
+        let res = await api.AuthLogin(this.form);
+
         if (this.source) {
           let url = this.getRedirectSource(res.data.authorizationCode);
           console.log(url);
@@ -94,15 +95,10 @@ export default {
           localStorage.setItem('accessTokenExpiredAt', res.data.expiredAt);
           this.$router.push({ path: '/' });
         }
-      } else {
-        this.$message({
-          message: res.message,
-          type: 'warning'
-        });
+      } catch (e) {
+        this.error(this, e);
       }
-      setTimeout(() => {
-        this.loading = false;
-      }, 400);
+      this.loading = false;
     },
     getRedirectSource(authorizationCode) {
       let source = base64.decode(this.source);

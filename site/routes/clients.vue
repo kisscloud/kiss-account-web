@@ -410,11 +410,13 @@ export default {
     async saveModules() {
       let modules = [];
       this.$refs['moduleTree'].getCheckedNodes().forEach(element => {
-        modules.push(element.id);
+        if (element.id !== 0) {
+          modules.push(element.id);
+        }
       });
       if (modules.length === 0) {
         this.$message({
-          message: '请选择权限',
+          message: '请选择权限模块',
           type: 'info'
         });
         return;
@@ -425,7 +427,7 @@ export default {
       });
       if (res.code === codes.Success) {
         this.$message({
-          message: '权限绑定成功',
+          message: '权限模块绑定成功',
           type: 'success'
         });
       } else {
